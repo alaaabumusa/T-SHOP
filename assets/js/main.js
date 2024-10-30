@@ -6,16 +6,30 @@ const getCategories = async () => {  // بجيب الداتا
 }
 
 const displayCategories = async () => {  // بعرض الداتا
-    const categories = await getCategories();
-    const result = categories.map((category) => {
-        return ` <div class="category">
+    const loader = document.querySelector(".loader-container");
+    loader.classList.add("active");
+
+    try {
+        const categories = await getCategories();
+        const result = categories.map((category) => {
+            return ` <div class="category">
         <h2>${category}</h2>
         <a href="categoryDetails.html?category=${category}">Details</a>
         </div>`
 
-    }).join(' ');
+        }).join(' ');
 
-    document.querySelector(".categories .row").innerHTML = result;
+        document.querySelector(".categories .row").innerHTML = result;
+
+    }
+    catch (error) {
+        console.error(error);
+        alert("Failed to load categories. Please check your internet connection.");
+    }
+
+    finally {
+        loader.classList.remove("active");
+    }
 
 }
 
@@ -27,9 +41,13 @@ const getProducts = async () => {  // بجيب الداتا
 }
 
 const displayProducts = async () => {  // بعرض الداتا
-    const data = await getProducts();
-    console.log(data);
-    const result = data.products.map((product) => {
+    const loader = document.querySelector(".loader-container");
+    loader.classList.add("active");
+
+    try {
+        const data = await getProducts();
+        console.log(data);
+        const result = data.products.map((product) => {
         return ` <div class="product">
         <img src =${product.thumbnail} alt =${product.title} />
         <h3>${product.title}</h3>
@@ -38,8 +56,31 @@ const displayProducts = async () => {  // بعرض الداتا
         </div>`
 
     }).join(' ');
-    document.querySelector(".prodects .row").innerHTML = result;
+    document.querySelector(".products .row").innerHTML = result;
 }
 
-displayCategories();
-displayProducts();
+    catch (error) {
+        console.error(error);
+        alert("Failed to load products. Please check your internet connection.");
+    } finally {
+        loader.classList.remove("active");
+    }
+}
+
+    displayCategories();
+    displayProducts();
+
+
+    window.onscroll = function(){
+        const nav = document.querySelector(".header");
+        const categories = document.querySelector(".categories");
+        
+        if (window.scrollY > categories.offsetTop) {
+          console.log('test');
+          nav.classList.add("scrolNavbar");
+        }else{
+            nav.classList.remove("scrolNavbar");
+        }
+    }
+        
+  
