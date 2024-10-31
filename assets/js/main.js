@@ -1,7 +1,7 @@
 const getCategories = async () => {  // بجيب الداتا
 
     const { data } = await axios.get(`https://dummyjson.com/products/category-list`);
-    console.log(data);
+  
     return data;
 }
 
@@ -36,7 +36,7 @@ const displayCategories = async () => {  // بعرض الداتا
 const getProducts = async () => {  // بجيب الداتا
 
     const { data } = await axios.get(`https://dummyjson.com/products`);
-    console.log(data);
+
     return data;
 }
 
@@ -46,7 +46,6 @@ const displayProducts = async () => {  // بعرض الداتا
 
     try {
         const data = await getProducts();
-        console.log(data);
         const result = data.products.map((product) => {
         return ` <div class="product">
         <img src =${product.thumbnail} alt =${product.title} />
@@ -76,11 +75,32 @@ const displayProducts = async () => {  // بعرض الداتا
         const categories = document.querySelector(".categories");
         
         if (window.scrollY > categories.offsetTop) {
-          console.log('test');
           nav.classList.add("scrolNavbar");
         }else{
             nav.classList.remove("scrolNavbar");
         }
     }
+
+    const countDown =()=>{
+        const countDownDate = new Date("2025-2-5 23:59:59").getTime();
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+        console.log(distance);
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        console.log(days, hours, minutes, seconds);
+        document.querySelector(".days").textContent = days;
+    document.querySelector(".hours").textContent = hours;
+    document.querySelector(".minutes").textContent = minutes;
+    document.querySelector(".seconds").textContent = seconds;
+    }
         
   
+
+
+    setInterval(()=>{
+        countDown();
+    },1000)
